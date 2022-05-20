@@ -67,3 +67,4 @@ uname -r
 Проверяем работу с Vagrant/
 Образ скачивается, VagrantFile -рабочий, все ок.
 Получаем систему с ядром.
+<https://github.com/vaslin1904/homework/blob/7f766446dbd6c46577a782218a1067af722dbbed/work1_kernel/rez_work1/Vagrantfile>
