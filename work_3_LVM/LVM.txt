@@ -260,20 +260,8 @@ Generating grub configuration file ...
 Found linux image: /boot/vmlinuz-3.10.0-862.2.3.el7.x86_64
 Found initrd image: /boot/initramfs-3.10.0-862.2.3.el7.x86_64.img
 done
-[root@lvm vagrant]# 
-[root@lvm vagrant]# ls /mnt
-bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  vagrant  var
-[root@lvm vagrant]# 
-[root@lvm vagrant]# for i in /proc/ /sys/ /dev/ /run/ /boot/; do mount --bind $i /mnt/$i; done
-[root@lvm vagrant]# chroot /mnt/
-[root@lvm /]# grub2-mkconfig -o /boot/grub2/grub.cfg
-Generating grub configuration file ...
-Found linux image: /boot/vmlinuz-3.10.0-862.2.3.el7.x86_64
-Found initrd image: /boot/initramfs-3.10.0-862.2.3.el7.x86_64.img
-done
 [root@lvm /]#
-[root@lvm boot]# cd /boot ; for i in `ls initramfs-*img`; do dracut -v $i `echo $i|sed "s/initramfs-//g;> > s/.img//g"` --force; done
-sed: -e expression #1, char 18: unknown command: `>'
+[root@lvm boot]# cd /boot ; for i in `ls initramfs-*img`; do dracut -v $i `echo $i|sed "s/initramfs-//g; s/.img//g"` --force; done
 Executing: /sbin/dracut -v initramfs-3.10.0-862.2.3.el7.x86_64.img --force
 dracut module 'busybox' will not be installed, because command 'busybox' could not be found!
 dracut module 'crypt' will not be installed, because command 'cryptsetup' could not be found!
