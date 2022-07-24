@@ -2,66 +2,80 @@
 ___________________________________________
 ## **Зайти в систему через загрузчик**
 ___________________________________________
-1. Для того, чтобы попасть в загрузчик системы при ее загрузке, необходимо нажать "e"(edit) при появлении окна выбора ядра системы:
-![Редактирование Grub во время загрузки](/images/way1.png)
-2. Устанавливаем нужные пакеты для работы с репозиторием и rpm пакетами:
-- yum install -y \redhat-lsb-core \wget \rpmdevtools \rpm-build \createrepo \yum-utils \gcc \lynx
-3. Загружаем пакет nginx:
-- wget https://nginx.org/packages/centos/7/SRPMS/nginx-1.14.1-1.el7_4.ngx.src.rpm
-4. Устанавливаем скаченный пакет nginx: 
-- rpm -i nginx-1.14.1-1.el7_4.ngx.src.rpm
-5. Скачиваем исходники openssl:
-- wget --no-check-certificate https://www.openssl.org/source/openssl-1.1.1o.tar.gz
-6. Распакуем скаченный архив в текущий каталог : 
-- tar -xvf /home/vagrant/openssl-1.1.1o.tar.gz
-7. Поставим все необходимые зависимости:
-- yum-builddep rpmbuild/SPECS/nginx.spec
-8. Отредактируем файл nginx.spec - укажем путь  до openssl: **--with-openssl=/root/openssl-1.1.1o**
-- sed '/--with-debug/ i --with-openssl=/root/openssl-1.1.1o \\' /root/rpmbuild/SPECS/nginx.spec
-9. Выполняем сборку rpm пакета: 
-- rpmbuild -bb rpmbuild/SPECS/nginx.spec
+1. Для того, чтобы попасть в загрузчик системы при ее загрузке, необходимо нажать "e"(edit) при появлении окна выбора ядра системы.
+2. **Способ 1.** В конце строки начинающейся с *linux16* добавляем <sup> init=/bin/sh </sup> и нажимаем **сtrl-x** для
+загрузки системы:
+![Редактирование Grub во время загрузки](images/way1.png)
+
+- Рутовая файловая система при этом монтируется в режиме *Read-Only*. Поэтому её необходимо <br> перемонтировать режим *Read-Write*:
+**mount -o remount,rw /**
+
+![Система в режиме Read Only](images/way1_ro.png)
+
+- Проверим, что перешли в режим *rw*. Для этого создадим файл "file1" в папке <sup>/home</sup> и поместим в него текст "privet": 
+
+![Система в режиме Read Write](images/way1_mount_rw.png)
+ 
+3. **Способ 2.** В конце строки начинающейся с *linux16* добавляем <sup> rd.break </sup> и нажимаем **сtrl-x** для
+загрузки системы:
+![Редактирование Grub во время загрузки](images/way2_grub.png)
+
+- Рутовая файловая система при этом монтируется в режиме *Read-Only*.
+
+![Система в режиме Read Only](images/way2_rw.png)
+- Теперь нужно попасть в систему в режиме *rw* и назначить новый пароль root:
+- [x]	mount -o remount,rw /sysroot
+- [x] chroot /sysroot
+- [x] passwd root
+-	Проверим, что теперь система в режиме *RW* : **touch /.autorelabel**
+![Система в режиме Read Write](images/way2_rez.png)
+
+4. **Способ 3.** В строку начинающейся с *linux16* добавляем <sup> rw init=/sysroot/bin/bash </sup> и нажимаем **сtrl-x** для
+загрузки системы:
+![Редактирование Grub во время загрузки](images/way3_grub.png)
+- Система загружается сразу в режиме *RW*:
+![Система в режиме Read Write](images/way3_check.png)
+_____________________________________________________________________
+## **Установить систему с LVM, после чего переименовать VG**
+_____________________________________________________________________
+1. Убедимся в наличии *lvm*: **vgs**
+![Проверка LVM](images/lvm_check.png)
+2. Переименуем *Volume* группу: **vgrename VolGroup00 OtusRoot**
+![Переименование Volume Group](images/lvm_renameVG.png)
+3. Правим файл монтирования: **vi /etc/fstab**
+![Правка файла fstab](images/lvm_edit_fstab.png)
+4. Правим файл с начальными настройками загрузчика: **vi /etc/default/grub**
+![Правка default Grub](images/lvm_editGrub.png)
+5. Правим конфигурационный файл загрузчика: **vi /boot/grub2/grub.cfg**
+![Правка файла grub.cfg](images/lvm_edit_Grub2.png)
+6. Пересобираем образ файловой системы, загружаемый в оперативную память вместе с ядром - **initramfs**:<br>
+**mkinitrd -f -v /boot/initramfs-$(uname -r).img $(uname -r)**
+![Пересборка initramfs](images/lvm_edit_Grub2.png)
+7. Перезагружаем систему и убеждаемся, что LVM имеет измененное имя Volume Group:
+![Проверка загрузки системы с новым имененм VG](images/lvm_checkWork.png) 
 ______________________________________________
-## **Создание своего репозитория**
+## **Добавить модуль в initrd**
 ______________________________________________
-1. Установим пакет nginx:  
-- yum localinstall -y /root/rpmbuild/RPMS/x86_64/nginx-1.14.1-1.el7_4.ngx.x86_64.rpm
-2. Запускаем nginx и проверяем его работу:
-- systemctl start nginx
-- systemctl status nginx
-3. Создадим каталог repo в каталоге по умолчанию для статики nginx /usr/share/nginx/html:
-- mkdir /usr/share/nginx/html/repo
-4. Копируем репозиторий nginx-1.14.1-1.el7_4.ngx.x86_64.rpm: 
-- cp nginx-1.14.1-1.el7_4.ngx.x86_64.rpm /usr/share/nginx/html/repo/
-5. Скачаем еще один пакет rpm в наш репозиторий:
-- wget http://www.percona.com/downloads/percona-release/redhat/0.1-6/percona-release-0.1-6.noarch.rpm -O /usr/share/nginx/html/repo/repcona-release-0.1-noarch.rpm
-6. Инициализируем репозиторий командой:
-- createrepo /usr/share/nginx/html/repo/
-7. Настроим в NGINX доступ к листингу каталога в файле /etc/nginx/conf.d/default.conf и блоке location: 
-- sed -i '10 a \\tautoindex on;' /etc/nginx/conf.d/default.conf
-8. Проверāем синтаксис и перезапускаем NGINX:
-- nginx -t
-- nginx -s reload
-9. Проверить доступ к списку к репозиторию можно командами:
-- lynx http://localhost/repo
-- curl -a http://localhost/repo/
-10. Добавим репозиторий в /etc/yum.repos.d:
-- cat>>/etc/yum.repos.d/otus.repo<<EOF
-> [otus]
-> name=otus-linux
-> baseurl=http://localhost/repo
-> gpgcheck=0
-> enabled=1
-> EOF                                
-11. Проверяем подключение к репозиторию:
-- yum repolist enabled|grep otus
-- yum list|grep otus
-12. Установим из репозитория пакет percona-release:
--  yum install percona-release -y 
-13. Репозиторий работает. 
+1. Создадим папку с именем *01test*:**mkdir /usr/lib/dracut/modules.d/01test**
+![Создание папки](images/module_dir.png)
+2. В созданную папку помещаем скрипт *module-setup.sh*:
+![Создание скрипта](images/module_sh.png)
+3.  В созданную папку помещаем скрипт *test.sh*:
+![Создание скрипта](images/module_test_sh.png)
+4.  Пересобираем образ файловой системы, загружаемый в оперативную память вместе с ядром - **initramfs**:<br>
+**mkinitrd -f -v /boot/initramfs-$(uname -r).img $(uname -r)**<br>
+или<br>
+**dracut -f -v**
+![Пересборка initramfs](images/module_initramfs.png)
+5. Убедимся, что модуль test загружен в образ: **lsinitrd -m /boot/initramfs-$(uname -r).img | grep test**
+![Проверка загрузки модуля](images/module_check.png)
+6. Отредактируем файл grub.cfg. Убираем параметры rghb и quiet.
+**В результате загрузки системы подзагружается новый модуль**
+![Результат загрузки модуля](images/module_rez.png)
 ____________________________________________
 ## **Вывод**
 _____________________________________________
-Все шаги по сборке пакета rpm и созданию своего репозитория развернуты в скрипте **script.sh**.
-Скрипт добавлен в файл Vagrant на исполнение при запуске.
+Файл Vagrant подзагружает box из облака, в котором уже есть LVM и переименована Volume Group, <br>
+а также при запуске системы в графическом режиме Virtual Box можно увидеть встроенный модуль ядра при загрузке системы.
 
 
