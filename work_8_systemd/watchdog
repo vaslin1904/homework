@@ -1,4 +1,4 @@
-# Configuration file for my watchdog service
+# Configuration file for my watchlog service
 # Place it to /etc/sysconfig
 # File and word in that file that we will be monit
 WORD="ALERT"
