@@ -9,41 +9,28 @@ ___________________________________________
 ![Содержимое файла watchlog.cfg](картинки/2.png)
 2. Создадим лог файл со словами: /var/log/watchlog.log:
             **touch /var/log/watchlog.log**<br>
-![Содержимое файла watchlog.log](картинки/3.png)
-3.Создаем скрипт, который ищет заданное слово в лог файле: */opt/watshlog.sh*<br>
-Даем права на выполнение скрипта chmod +x /opt/watshlog.sh
+![Содержимое файла watchlog.log](картинки/3.png)<br>
+3. Создаем скрипт, который ищет заданное слово в лог файле: */opt/watshlog.sh*<br>
+Даем права на выполнение скрипта chmod +x /opt/watshlog.sh<br>
 ![Скрипт поиска](картинки/4.png)<br>
-4.Создаем сервис мониторинга и таймер для его периодическго запуска в директории /etc/systemd/
-см. файлы watchlog.service и watchlog.timer.
+4. Создаем сервис мониторинга и таймер для его периодическго запуска в директории /etc/systemd/<br>
+см. файлы watchlog.service и watchlog.timer.<br>
 5. Запускаем созданные сервис и таймер systemd. <br>
 ![Запуск watchlog.timer](картинки/5.png)<br>
-6. Проверим работу системы мониторинга:
+6. Проверим работу системы мониторинга:<br>
 **tail -f /var/log/messages**<br>
 ![Мониторинг файла](картинки/6.png)<br>
 _____________________________________________________________________
-## **Установить систему с LVM, после чего переименовать VG**
+## **Переписать init-скрипт на unit-файл**
 _____________________________________________________________________
-1. Убедимся в наличии *lvm*: **vgs**
-![Проверка LVM](images/lvm_check.png)
-2. Переименуем *Volume* группу: **vgrename VolGroup00 OtusRoot**
-
-![Переименование Volume Group](images/lvm_renameVG.png)
-3. Правим файл монтирования: **vi /etc/fstab**
-
-![Правка файла fstab](images/lvm_edit_fstab.png)
-4. Правим файл с начальными настройками загрузчика: **vi /etc/default/grub**
-
-![Правка default Grub](images/lvm_editGrub.png)
-5. Правим конфигурационный файл загрузчика: **vi /boot/grub2/grub.cfg**
-
-![Правка файла grub.cfg](images/lvm_edit_Grub2.png)
-6. Пересобираем образ файловой системы, загружаемый в оперативную память вместе с ядром - **initramfs**:<br>
-**mkinitrd -f -v /boot/initramfs-$(uname -r).img $(uname -r)**
-
-![Пересборка initramfs](images/lvm_edit_Grub2.png)
-7. Перезагружаем систему и убеждаемся, что LVM имеет измененное имя Volume Group:
-
-![Проверка загрузки системы с новым имененм VG](images/lvm_checkWork.png) 
+1. Устанавливаем spawn-fcgi и необходимые для него пакеты:<br>
+**yum install epel-release -y && yum install spawn-fcgi php php-cli mod_fcgid httpd -y**
+2. В файле /etc/sysconfig/spawn-fcgi раскомментируем строку "OPTIONS".<br>
+![Файл spawn-fcgi](картинки/7.png)<br>
+3. Создаем юнит: **vi /etc/systemd/system/spawn-fcgi.service**<br>.
+см. файл spawn-fcgi.service. <br>
+4. Запускаем созданный сервис. <br>
+![Запуск spawn-fcgi.service](картинки/8.png)<br>
 ______________________________________________
 ## **Добавить модуль в initrd**
 ______________________________________________
