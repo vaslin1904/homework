@@ -1,0 +1,11 @@
+#copy configuration
+- name: setting_log
+  copy:
+    src: 'files/sys/{{ item.src }}'
+    dest: '{{ item.dest }}'
+  loop:
+    - { src: rsyslog.conf, dest: /etc/ }
+    - { src: auditd.conf, dest: /etc/audit/ }
+  notify:
+    - restart auditd
+    - restart rsyslog

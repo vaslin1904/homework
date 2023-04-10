@@ -1,0 +1,7 @@
+---
+#install_nginx
+- name: Install audispd-plugins
+  yum:
+    name: audispd-plugins
+  tags:
+    - audispd-plugins
