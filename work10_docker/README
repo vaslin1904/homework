@@ -15,16 +15,29 @@ _____________________________________________________________________
 репозиториями, установки и отладки пакетов, поиска пакетов и т.д.<\br> 
              **sudo yum install -y yum-utils**
 2. Добавляем репозиторий Docker: 
-![Правка файла main.cf](картинки/1.png)<br>
+
 3. Устанавливаем последнюю версию пакетов docker
 4. Запускаем docker:
             **sudo systemctl start docker**
 5. Проверяем работоспособность docker
             **sudo docker run hello-world**
+![Проверка docker](images\1run_docker.png)<br>
             **sudo systemctl status docker**
+ ![Статус docker](images\2status_docker.png)<br>           
 6. Так как docker запускается под root или под пользователем, входящим в группу docker, то
 добавим пользователя vagrant в эту группу:
           **sudo usermod -a -G docker vagrant**
+![groups docker](images\3groups.png)<br> 
+7. Создаем html файл
+8. Запускаем контейнер nginx на базе alpine с подключением volume
+   **docker run -d -p 80:80 -v ~/html/://usr/share/nginx/html:rw nginx:alpine**
+![alpine docker](images\5 nginx alpine.png)<br>  
+9. Обращаемся к nginx с кастомной страницей
+         **curl localhost:8080**
+![curl nginx](images\6 curl nginx.png)<br>
+         
+
+
 ______________________________________________
 ## **Отправка почтой**
 ______________________________________________
