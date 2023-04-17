@@ -1,0 +1,39 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+disk = '/home/kat/VirtualBox VMs/2.vdi'
+Vagrant.configure(2) do |config|
+
+  config.vm.box = "centos/7"
+
+  #config.vm.provision "ansible" do |ansible|
+  #  #ansible.verbose = "vvv"
+  #  ansible.playbook = "provisioning/playbook.yml"
+  #  ansible.become = "true"
+#  end
+
+  config.vm.define "server" do |server|
+
+    server.vm.network "private_network", ip: "192.168.56.160"
+    server.vm.hostname = "server"
+    server.vm.provider "virtualbox" do |v|
+      v.memory = 1024
+      unless File.exist?(disk)
+        v.customize ['createhd', '--filename', disk, '--size', 2 * 1024]
+      end
+        v.customize ['storageattach', :id, '--storagectl', 'IDE', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk]
+   end
+    server.vm.provision "shell", inline: <<-SHELL
+        yes | mkfs.ext4 /dev/sdb 
+        mkdir /var/backup
+        sudo mount /dev/sdb /var/backup
+    SHELL
+ end
+
+  config.vm.define "client" do |client|
+    client.vm.network "private_network", ip: "192.168.56.150"
+    client.vm.hostname = "client"
+    client.vm.provider "virtualbox" do |v|
+      v.memory = 1024
+    end
+  end
+end
