@@ -1,0 +1,10 @@
+---
+#copy configuration
+- name: init borg repo
+  shell: |
+    ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
+    export BORG_PASSPHRASE='Otus1234'
+    borg init --encryption=repokey borg@192.168.56.166:/var/backup/first
+  become: yes
+  become_user: borg
+  become_method: enable

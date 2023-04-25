@@ -1,0 +1,7 @@
+---
+- name: user borg
+  user:
+    name: borg
+    comment: borg backup user
+    create_home: yes
+    force: yes

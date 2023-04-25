@@ -1,0 +1,6 @@
+---
+#install_borg
+- name: Install borg package from epel repo
+  yum:
+    name: borgbackup
+    state: latest

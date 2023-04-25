@@ -1,0 +1,4 @@
+Host 192.168.56.166
+IdentityFile /home/vagrant/.ssh/id_rsa
+RSAAuthentication yes
+StrictHostKeyChecking no
