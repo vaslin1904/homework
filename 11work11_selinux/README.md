@@ -69,7 +69,7 @@ SELinux будет блокировать запрещенную активно�
 ![img](images/12%20audit2allow.png)<br>
 3.  Запускаем и проверяем  nginx <br>
 **systemctl start nginx && systemctl status nginx** <br>
-![img](images/112semodule%20nginx.png)<br>
+![img](images/12semodule%20nginx.png) <br>
 
 
 
