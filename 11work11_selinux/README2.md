@@ -16,14 +16,13 @@ ____________________________________________________________-
 ![img](images/part2/2ns1%20log.png) <br>
 В логах мы видим, что ошибка в контексте безопасности. Вместо типа named_t используется тип etc_t
 5. Проверим данную проблему в каталоге /etc/named: <br>
-**ls -laZ /etc/named**<br>
-![img](images/part2/3%20contex%20etc_named.png) <br>
+**ls -laZ /etc/named** <br>
+![img](images/part2/3%20contex%20etc_named.png) 
 
 Тут мы также видим, что контекст безопасности неправильный.<br>
 Проблема заключается в том, что конфигурационные файлы лежат в другом каталоге. Посмотреть в каком каталоги должны лежать, файлы, чтобы на них распространялись правильные политики SELinux можно с помощью команды:<br>
 **sudo semanage fcontext -l | grep named** <br>
-![img](images/part2/part2/4%20grep%20named.png) <br>
-
+![img](images/part2/4%20grep%20named.pn) <br>
 6. Изменим тип контекста безопасности для каталога /etc/named:<br>
 **sudo chcon -R -t named_zone_t /etc/named**<br>
 ![img](images/part2/5change%20type%20contex.png)
