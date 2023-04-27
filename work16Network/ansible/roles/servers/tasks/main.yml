@@ -1,0 +1,27 @@
+---
+- name: set up route on office1Server
+  template:
+    src: office1Server_route.j2
+    dest: /etc/netplan/50-vagrant.yaml
+    owner: root
+    group: root
+    mode: 0644
+  when: (ansible_hostname == "office1Server")
+
+- name: set up route on office2Server
+  template:
+    src: office2Server_route.j2
+    dest: /etc/network/interfaces
+    owner: root
+    group: root
+    mode: 0644
+  when: (ansible_hostname == "office2Server")
+
+- name: set up route on centralRouter eth1
+  template:
+    src: centralRouter_route_eth1.j2
+    dest: /etc/sysconfig/network-scripts/route-eth1
+    owner: root
+    group: root
+    mode: 0644
+  when: (ansible_hostname == "centralRouter")

@@ -1,0 +1,7 @@
+---
+#module handlers
+- name: start timer
+  ansible.builtin.systemd:
+    name: borg_backup.timer
+    state: started
+    enabled: true
