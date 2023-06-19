@@ -1,0 +1,18 @@
+---
+- name: Install traceroute
+  apt:
+    name:
+    - traceroute
+    state: present
+    update_cache: true
+  become: true
+  when: inventory_hostname in groups['ubuntu']
+
+- name: Install traceroute centos
+  yum:
+    name:
+    - traceroute
+    state: present
+    update_cache: true
+  become: true
+  when: inventory_hostname in groups['centos']

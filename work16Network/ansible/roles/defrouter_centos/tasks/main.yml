@@ -1,0 +1,34 @@
+---
+# echo "DEFROUTE=no" >> /etc/sysconfig/network-scripts/ifcfg-eth0
+- name: desable default route
+  lineinfile:
+    dest: /etc/sysconfig/network-scripts/ifcfg-eth0
+    line: DEFROUTE=no
+
+#/etc/sysconfig/network-scripts/ifcfg-eth1
+- name: add default gateway for centralRouter
+  lineinfile:
+    dest: /etc/sysconfig/network-scripts/ifcfg-eth1
+    line: GATEWAY=192.168.255.1
+  delegate_to: centralRouter
+
+- name: add default gateway for centralServer
+  lineinfile:
+    dest: /etc/sysconfig/network-scripts/ifcfg-eth1
+    line: GATEWAY=192.168.0.1
+  delegate_to: centralServer
+
+- name: add default gateway for office2Router
+  lineinfile:
+    dest: /etc/sysconfig/network-scripts/ifcfg-eth1
+    line: GATEWAY=192.168.255.5
+  delegate_to: office2Router
+
+- name: add default gateway for office2Server
+  lineinfile:
+    dest: /etc/sysconfig/network-scripts/ifcfg-eth1
+    line: GATEWAY=192.168.1.1
+  delegate_to: office2Server
+
+  notify:
+    - restart network

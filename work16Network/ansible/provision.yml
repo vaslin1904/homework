@@ -1,28 +1,41 @@
 ---
-- name: borg service
+- name: tracerouter
   hosts: all
+  gather_facts: false
   become: True
 
   roles:
-  - settings
+  - tracerouter
 
-- name: setup server
-  hosts: server
+
+- name: set Inet Router
+  hosts: inetRouter
+  gather_facts: false
   become: True
 
   roles:
-  - server
+  - inet_Router
 
-- name: setting client
-  hosts: client
+- name: set Routers
+  hosts: routers
+  gather_facts: false
   become: True
 
   roles:
-  - client
+  - routers
 
-#- name: deploy keys
-#  hosts: server
-#  become: true
+- name: set defroute
+  hosts: centos:!inetRouter
+  gather_facts: false
+  become: True
 
-#  roles:
-#  - key_input
+  roles:
+  - defrouter_centos
+
+- name: set routers
+  hosts: all
+  gather_facts: false
+  become: True
+
+  roles:
+  - servers

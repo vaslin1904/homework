@@ -1,7 +1,13 @@
 ---
 #module handlers
-- name: start timer
-  ansible.builtin.systemd:
-    name: borg_backup.timer
-    state: started
-    enabled: true
+- name: set_firewalld
+  service:
+    name: firewalld
+    state: stopped
+    enabled: off
+
+- name: iptables_service
+  service:
+    name: iptables
+    state: restarted
+    enabled: yes

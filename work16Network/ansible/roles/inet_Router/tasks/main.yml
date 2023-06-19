@@ -1,9 +1,6 @@
 ---
-- name: Set up NAT on inetRouter
-  include_tasks: Set_up_Nat.yml
+- name: install iptables on inetRouter
+  include_tasks: inst_ipt.yml
 
 - name: copy iptables config
   include_tasks: copy_config.yml
-
-- name: start and enable iptables service
-  include_tasks: start_iptables.yml
