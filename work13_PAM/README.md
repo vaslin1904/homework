@@ -25,11 +25,12 @@ _______________________________________________________
 **cat /etc/group | grep admin**
   ![img](images/3%20check%20admin.png)
 #### Создадим файл-скрипт /usr/local/bin/login.sh (используем аутентитфикацию  PAM) <br>
+![login.sh ](login.sh)<br>
 -Добавим права на исполнение файла <br>
 **chmod +x /usr/local/bin/login.sh** <br>
 -Укажем в файле /etc/pam.d/sshd модуль pam_exec и наш скрипт: <br>
 **vi /etc/pam.d/sshd** <br>
  ![img](images/4%20sshd.png)<br>
 -Для проверки установим дату системы на выходной день вручную <br>
-**sudo date 082712302022.00**
+**sudo date 082712302022.00** <br>
  ![img](images/5%20itog.png)
