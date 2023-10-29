@@ -111,9 +111,9 @@ Auditd по умолчанию не умеет пересылать логи, д
 /etc/nginx/nginx.conf и проверить на log-сервере, что пришла информация об изменении атрибута:</br>
 **ls -l /etc/nginx/nginx.conf**</br>
 **chmod +x /etc/nginx/nginx.conf**</br>
-![img](16%20web_change%20atribut.png)</br>
+![img](16%20web_change%20atribut.png) </br>
 проверить на log-сервере, что пришла информация об изменении атрибута</br>
 **grep web /var/log/audit/audit.log**</br>
-![img](images/17%20log_chancge%20atribut%20logs.png)</br>
+![img](images/17%20log_chancge%20atribut%20logs.png) </br>
 ## Итог
 Весь процесс настроек логов автоматизирован с помощью ансибл.</br>
