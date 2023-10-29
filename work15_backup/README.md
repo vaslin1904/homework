@@ -20,26 +20,27 @@ _______________________________________________________________________
 Проверим, что служба работает корректно: </br>
 **systemctl status chronyd**</br>
 ![img](image/1%20repo%20borg.png)</br>
- Подключаем EPEL репозиторий с дополнительными пакетами
-# yum install epel-release
+## Устанавливаем borgbackup
+Подключаем EPEL репозиторий с дополнительными пакетами
+**yum install epel-release**
  Устанавливаем borgbackup
-# yum install borgbackup
-server
+**yum install borgbackup**
+## Настройка доступа по ssh ключам
 На сервере backup создаем пользователя и каталог /var/backup (в
 домашнем задании нужно будет создать диск ~2Gb и
 примонтировать его) и назначаем на него права пользователя borg
- useradd -m borg
-# mkdir /var/backup
-# chown borg:borg /var/backup/
+ **useradd -m borg**
+**mkdir /var/backup**
+**chown borg:borg /var/backup/**
 
 На сервер backup создаем каталог ~/.ssh/authorized_keys в
 каталоге /home/borg
-# mkdir
-# mkdir .ssh
-# touch .ssh/authorized_keys
-# chmod 700 .ssh
-# chmod 600 .ssh/authorized_keys
-
+** mkdir**
+**mkdir .ssh**
+**touch .ssh/authorized_keys**
+**chmod 700 .ssh**
+**chmod 600 .ssh/authorized_keys**
+## Настройка сервера "server"
 
 client
 генерируем ssh-ключ и добавляем его на сервер backup в
