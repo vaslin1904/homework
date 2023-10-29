@@ -33,47 +33,40 @@ _______________________________________________________________________
 **mkdir /var/backup**
 **chown borg:borg /var/backup/**
 
-На сервер backup создаем каталог ~/.ssh/authorized_keys в
-каталоге /home/borg
-** mkdir**
+На сервер backup создаем каталог ~/.ssh/authorized_keys в каталоге /home/borg </br>
+**mkdir /home/borg**
 **mkdir .ssh**
 **touch .ssh/authorized_keys**
 **chmod 700 .ssh**
 **chmod 600 .ssh/authorized_keys**
-## Настройка сервера "server"
-
-client
-генерируем ssh-ключ и добавляем его на сервер backup в
-файл authorized_keys созданным на прошлом шаге
-# ssh-keygen
-ssh-copy-id borg@192.168.56.160
-
- Инициализируем репозиторий borg на backup сервере с client
-сервера:
-# borg init --encryption=repokey borg@192.168.56.160:/var/backup/first
-**1**
-Запускаем для проверки создания бэкапа
-sudo borg create --list --stats borg@192.168.56.160:/var/backup/first::"etc-{now:%Y-%m-%d_%H:%M:%S}" /etc
-**2**
-
+На клиенте генерируем ssh-ключ и добавляем его на сервер backup в файл authorized_keys созданным на прошлом шаге /home/borg </br>
+**ssh-keygen**
+**ssh-copy-id borg@192.168.56.160**
+# Работа с borg
+ Инициализируем репозиторий borg на backup сервере с client сервера: </br>
+# borg init --encryption=repokey borg@192.168.56.160:/var/backup/first </br>
+![img](image/2%20init%20repo.png) </br>
+Запускаем для проверки создания бэкапа  </br>
+sudo borg create --list --stats borg@192.168.56.160:/var/backup/first::"etc-{now:%Y-%m-%d_%H:%M:%S}" /etc </br>
+![img](image/3%20backup%20.png) </br>
 Список backup
 borg list borg@192.168.56.160:/var/backup/first
-**3**
+![img](image/3%20backup%20.png) </br>
 Смотрим список файлов
-# borg list borg@192.168.56.160:/var/backup/first/::etc-2023-04-08_16:06:52
-
-**4**
+**borg list borg@192.168.56.160:/var/backup/first/::etc-2023-04-08_16:06:52**
+![img](image/4%20list%20files.png)
 Достаем файл из бекапа
 borg extract borg@192.168.56.160:/var/backup/first/::etc-2023-04-08_16:06:52 etc/hostname
 ************
-Автоматизируем создание бэкапов с помощью systemd
-Создаем сервис и таймер в каталоге /etc/systemd/system/
-# /etc/systemd/system/borg-backup.service
-
- Включаем и запускаем службу таймера
-# systemctl enable borg-backup.timer
-# systemctl start borg-backup.timer
-**5**
-Проверяем копии:
-**
-6**
+## Автоматизируем создание бэкапов с помощью systemd </br>
+Создаем сервис и таймер в каталоге /etc/systemd/system/ </br>
+**/etc/systemd/system/borg-backup.service** </br>
+ Включаем и запускаем службу таймера </br>
+**systemctl enable borg-backup.timer** </br>
+**systemctl start borg-backup.timer** </br>
+![img](image/5%20create%20borg%20timer%20.png) </br>
+Проверяем копии: </br>
+![img](image/check%20copy.png) </br>
+![img](image/status%20borg_timer.png) </br>
+## Итоги
+Весь процесс настроек сервера и клиента, а также организация резервных копий клиента был автоматизирован с помощью ansible.
