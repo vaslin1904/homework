@@ -1,36 +1,46 @@
-
+# Описание домашнего задания
+1. В Vagrant разворачиваются 2 виртуальные машины web и log.
+2. На web настраиваем nginx.
+3. Наlog настраиваем центральный лог сервер на любой системе на выбор:
+- journald;
+- rsyslog;
+- elk.
+4. Настраиваем аудит, следящий за изменением конфигов nginx.
+Все критичные логи с web должны собираться и локально и удаленно.
+Все логи с nginx должны уходить на удаленный сервер (локально только критичные).
+Логи аудита должны также уходить на удаленную систему.
+_______________________________________________________________________________
+# Выполнение задания
+### Настройка времени
 Для правильной работы c логами, нужно, чтобы на всех хостах было настроено одинаковое время.
 Укажем часовой пояс (Московское время):
-cp/usr/share/zoneinfo/Europe/Moscow /etc/localtime
+**cp/usr/share/zoneinfo/Europe/Moscow /etc/localtime**
 Перезупустим службу NTP Chrony: 
-systemctl restart chronyd
+**systemctl restart chronyd**
 Проверим, что служба работает корректно: 
-systemctl status chronyd
-**1**
-2 Установка nginx на виртуальной машине web
+**systemctl status chronyd**
+![img](images/1%20setup%20time.png)
+### Установка nginx на виртуальной машине web
 Для установки nginx сначала нужно установить epel-release: 
-yum install epel-release
+**yum install epel-release**
 Установим nginx: 
-yum install -y nginx
-**2**
-3. Настройка центрального сервера сбора логовntp
+**yum install -y nginx**
+![img](images/2web_nginx.png)
+### Настройка центрального сервера сбора логов ntp
 rsyslog должен быть установлен по умолчанию в нашёй ОС, проверим это:
-yum list rsyslog
-**3**
+**yum list rsyslog**
+![img](images/3log_check%20rsyslog.png)
 Все настройки Rsyslog хранятся в файле /etc/rsyslog.conf
 Для того, чтобы наш сервер мог принимать логи, нам необходимо внести следующие изменения в файл:
-Открываем порт 514 (TCP и UDP):
-и 
+### Открываем порт 514 (TCP и UDP):
 В конец файла /etc/rsyslog.conf добавляем правила приёма сообщений от хостов:
-#Add remote logs
-$template RemoteLogs,"/var/log/rsyslog/%HOSTNAME%/%PROGRAMNAME%.log"
-*.* ?RemoteLogs
-& ~
+**Add remote logs $template RemoteLogs,"/var/log/rsyslog/%HOSTNAME%/%PROGRAMNAME%.log"
+*.* ?RemoteLogs & ~**
 Далее сохраняем файл и перезапускаем службу rsyslog:
- systemctl restart rsyslog
+ **systemctl restart rsyslog**
 Проверяем настройки: будут видны открытые порты TCP,UDP 514:
  ss -tuln
- **6**
+ ![img](images/6%20log_check%20port%20514.png)
  Далее настроим отправку логов с web-сервера
  Версия nginx должна быть 1.7 или выше. 
  rpm -qa | grep nginx
