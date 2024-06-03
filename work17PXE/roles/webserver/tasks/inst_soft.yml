@@ -1,0 +1,12 @@
+---
+- name: inst_soft
+  yum:
+    name:
+    - vim
+    - wget
+    - epel-release
+    - httpd
+    - tftp-server
+    - dhcp-server
+    state: present
+    update_cache: true

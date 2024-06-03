@@ -1,0 +1,24 @@
+---
+- name: webserver
+  hosts: pxeserver
+  gather_facts: false
+  become: True
+
+  roles:
+  - webserver
+
+- name: tftp_server
+  hosts: pxeserver
+  gather_facts: false
+  become: True
+
+  roles:
+  - tftp_server
+
+  - name: dhcp_server
+    hosts: pxeserver
+    gather_facts: false
+    become: True
+
+    roles:
+    - dhcp_server
