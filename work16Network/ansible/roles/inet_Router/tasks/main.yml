@@ -1,6 +1,7 @@
 ---
+#Установка пакетов iptables, iptables-services
 - name: install iptables on inetRouter
   include_tasks: inst_ipt.yml
-
+#Настрока iptables и отключение firewalld
 - name: copy iptables config
   include_tasks: copy_config.yml

@@ -1,5 +1,7 @@
 ---
-#- name: iptables config
+#Копирование файла настройки,
+#отключение firewalld, перезапуск
+#и включение в автозагрузку iptables_service
 - name: copy iptables config
   template:
     src: files/iptables

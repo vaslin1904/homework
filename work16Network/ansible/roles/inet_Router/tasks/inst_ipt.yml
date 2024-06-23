@@ -1,4 +1,5 @@
 ---
+#Установка пакетов iptables, iptables-services
 - name: install iptables on inetRouter
   yum:
     name:

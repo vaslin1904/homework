@@ -1,13 +1,5 @@
 ---
-- name: tracerouter
-  hosts: all
-  gather_facts: false
-  become: True
-
-  roles:
-  - tracerouter
-
-
+#Настройки Inet Router
 - name: set Inet Router
   hosts: inetRouter
   gather_facts: false
@@ -15,7 +7,8 @@
 
   roles:
   - inet_Router
-
+#Настройки Routers
+#Включение функции пересылки транзитных пакетов через интерфесы роутеров
 - name: set Routers
   hosts: routers
   gather_facts: false
@@ -23,7 +16,9 @@
 
   roles:
   - routers
-
+#Настройки всех роутеров и серверов с ОС  centos, кроме inetRouter
+#Добавление настройки DEFROUTE=no в конфиг интерфейса eth0 (отключение машрута по умолчанию)
+#Назначаются ip ШЛЮЗА для всех роутеров и серверов с CENTOS
 - name: set defroute
   hosts: centos:!inetRouter
   gather_facts: false
@@ -31,7 +26,7 @@
 
   roles:
   - defrouter_centos
-
+#Установка машрутов
 - name: set routers
   hosts: all
   gather_facts: false
@@ -39,3 +34,12 @@
 
   roles:
   - servers
+
+#Установка пакета tracerouter на все хосты
+- name: tracerouter
+  hosts: all
+  gather_facts: false
+  become: True
+
+  roles:
+  - tracerouter

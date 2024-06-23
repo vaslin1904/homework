@@ -1,4 +1,5 @@
 ---
+#Назначение машрутов
 - name: set up route on inetRouter
   template:
     src: files/inetRouter_eth1.j2
@@ -66,13 +67,13 @@
     group: root
     mode: 0644
   delegate_to: office1Router
-
+#Применение настроек для систем с ubuntu
 - name: apply_ubuntu
   command: sudo netplan apply
   ignore_errors: true
   become: yes
   when: inventory_hostname in groups['ubuntu']
-
+#Перезагрузка  network для систем с ubuntu
 - name: restart network
   command: sudo reboot #systemctl restart network
   become: yes
