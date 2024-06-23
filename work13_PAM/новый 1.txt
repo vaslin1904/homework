@@ -1,0 +1,30 @@
+Настройка запрета для всех пользователей
+кроме группы Admin) логина в выходные дни (Праздники не учитываются)
+-Создаём пользователя otusadm и otus  под  root
+sudo useradd otusadm && sudo useradd otus
+-Создаём пользователям пароли:
+echo "Otus2022!" | sudo passwd --stdin otusadm && echo "Otus2022!" | sudo passwd --stdin otus
+**1**
+-Создаём группу admin
+sudo groupadd -f admin
+-Добавляем пользователей vagrant,root и otusadm в группу admin
+sudo usermod otusadm -a -G admin
+    sudo usermod root -a -G admin
+    sudo usermod vagrant -a -G admin
+- Проверяем, что otusadm и otus могут подключаться по SSH к нашей ВМ. Для этого пытаемся 
+подключиться к хостовой машине
+ssh otus@192.168.57.10
+ssh otusadm@192.168.57.10
+**2**
+Далее настроим правило, по которому все пользователи
+кроме тех, что указаны в группе admin не смогут подключаться в выходные дни:
+-Проверим, что пользователи root, vagrant и otusadm есть в группе admin:
+cat /etc/group | grep admin
+**3**
+-Создадим файл-скрипт /usr/local/bin/login.sh (используем аутентитфикацию  PAM)
+-Добавим права на исполнение файла
+chmod +x /usr/local/bin/login.sh
+-Укажем в файле /etc/pam.d/sshd модуль pam_exec и наш скрипт:
+vi /etc/pam.d/sshd
+-Для проверки установим дату системы на выходной день вручную
+sudo date 082712302022.00

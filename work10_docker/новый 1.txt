@@ -1,0 +1,52 @@
+1.
+https://docs.docker.com/engine/install/
+Устанавливаем Пакет YUM-Utils - это набор утилит, реализующих дополнительные возможности для управления 
+репозиториями, установки и отладки пакетов, поиска пакетов и т.д.
+sudo yum install -y yum-utils
+2.Добавляем репозиторий Docker: 
+3. Устанавливаем последнюю версию пакетов docker
+4. Запускаем docker
+sudo systemctl start docker
+5. Проверяем работоспособность docker
+sudo docker run hello-world
+sudo systemctl status docker
+6. Так как docker запускается под root или под пользователем, входящим в группу docker, то
+добавим пользователя vagrant в эту группу:
+sudo usermod -a -G docker vagrant
+7. Создаем папку html с файлом не стандартной страницы nginx index.html
+8. Запускаем контейнер nginx на базе alpine с подключением volume
+
+docker run -d -p 80:80 -v ~/html/://usr/share/nginx/html:rw nginx:alpine
+
+9. Для создания образа контейнера необходимо создать dockerfile
+10. Создаем кастомный образ nginx my_nginx
+docker build -t my_nginx .
+11. Просмотрим имеющиеся образы
+docker images
+12.Создадим контейнер из созданного образа
+docker run -it -p 8080:80 --name my_webserver my_nginx
+13. Запустим контейнер
+docker run -d -p 8080:80 --name my_webserver my_nginx
+14. Проверим работу контейнера
+curl localhost:8080
+15. Образ разместить на докер хабе
+1. залогинимся в докер
+docker login
+2.Сначало пометим изображение
+docker image tag my_nginx vaslin/my_nginx:1.0
+3. Запушим изображение в репозиторий докер
+docker image push vaslin/my_nginx:1.0
+https://hub.docker.com/r/vaslin/my_nginx/tags
+docker pull vaslin/my_nginx:1.0
+
+
+Удаление контейнеров:
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+Удаление образа
+ docker rmi my_nginx
+ Запуск в интерактивном режиме 
+ docker run -it -p 8080:80 --name webserver my_nginx
+ Просмотр всех контейнеров 
+ docker ps -a
+ 

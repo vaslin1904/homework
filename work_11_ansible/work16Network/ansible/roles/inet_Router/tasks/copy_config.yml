@@ -1,0 +1,14 @@
+---
+#Копирование файла настройки,
+#отключение firewalld, перезапуск
+#и включение в автозагрузку iptables_service
+- name: copy iptables config
+  template:
+    src: files/iptables
+    dest: /etc/sysconfig/iptables
+    owner: root
+    group: root
+    mode: 0600
+  notify:
+    - set_firewalld
+    - iptables_service

@@ -1,0 +1,9 @@
+---
+#Установка пакетов iptables, iptables-services
+- name: install iptables on inetRouter
+  yum:
+    name:
+    - iptables
+    - iptables-services
+    state: present
+    update_cache: true

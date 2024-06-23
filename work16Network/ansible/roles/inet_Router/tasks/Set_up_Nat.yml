@@ -1,0 +1,10 @@
+---
+- name: Set up NAT on inetRouter
+  block:
+-   name: install iptables
+    yum:
+      name:
+        - iptables
+        - iptables-services
+      state: present
+      update_cache: true

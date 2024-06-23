@@ -1,0 +1,11 @@
+---
+- name: set up httpd config
+  template:
+    src: files/pxeboot.conf
+    dest: /etc/httpd/conf.d/pxeboot.conf
+    owner: root
+    group: root
+    mode: 0640
+
+  notify:
+    - restart httpd

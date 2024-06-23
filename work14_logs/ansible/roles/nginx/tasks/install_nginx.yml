@@ -1,0 +1,11 @@
+---
+#install_nginx
+- name: Install nginx package from epel repo
+  yum:
+    name: nginx
+    state: latest
+  notify:
+    - restart nginx
+  tags:
+    - nginx-package
+    - packages

@@ -1,0 +1,10 @@
+---
+- name: setting auto backup
+  copy:
+    src: 'files/{{ item.src }}'
+    dest: '{{ item.dest }}'
+  loop:
+    - { src: borg_backup.service, dest: /etc/systemd/system }
+    - { src: borg_backup.timer, dest: /etc/systemd/system}
+  notify:
+    - start timer

@@ -1,0 +1,14 @@
+---
+#module handlers
+#Выключение firewalld
+- name: set_firewalld
+  service:
+    name: firewalld
+    state: stopped
+    enabled: off
+#Перезапускаеи iptables и включаем автозапуск
+- name: iptables_service
+  service:
+    name: iptables
+    state: restarted
+    enabled: yes
