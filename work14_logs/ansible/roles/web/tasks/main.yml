@@ -1,7 +1,0 @@
----
-#include tasks
- - name: install_audispd-plugins
-   include_tasks: install_plugins.yml
-
- - name: copy_config
-   include_tasks: setting_web.yml

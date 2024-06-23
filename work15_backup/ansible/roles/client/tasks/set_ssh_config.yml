@@ -1,8 +1,0 @@
----
-- name: setting ssh_config
-  copy:
-    src: 'files/client/{{ item.src }}'
-    dest: '{{ item.dest }}'
-  loop:
-    - { src: config, dest: /home/vagrant/.ssh/}
-    - { src: hosts, dest: /etc/ }

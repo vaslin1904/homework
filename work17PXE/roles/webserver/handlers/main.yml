@@ -1,7 +1,0 @@
----
-#module handlers
-- name: restart httpd
-  ansible.builtin.systemd:
-    state: restarted
-    name: httpd
-    enabled: true

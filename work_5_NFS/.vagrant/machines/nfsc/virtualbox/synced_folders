@@ -1,1 +1,0 @@
-{"rsync":{"/vagrant":{"type":"rsync","guestpath":"/vagrant","hostpath":"N:/Linux ot/work_5_NFS","disabled":false,"__vagrantfile":true,"owner":"vagrant","group":"vagrant"}}}

@@ -1,8 +1,0 @@
----
-- name: Mount ISO image
-  mount:
-    path: /mnt
-    src: /root/CentOS-Stream-8-x86_64-latest-dvd1.iso
-    fstype: iso9660
-    opts: ro,loop
-    state: mounted
