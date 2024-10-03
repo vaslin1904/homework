@@ -1,0 +1,6 @@
+---
+- name: Create | Create Download directory
+  ansible.builtin.file:
+    path: /home/vagrant/Downloads
+    state: directory
+  become: true

@@ -1,0 +1,6 @@
+---
+- name: Reboot system
+  ansible.builtin.reboot:
+    reboot_timeout: 11200
+    test_command: "uname -r"
+  tags: reboot_sys

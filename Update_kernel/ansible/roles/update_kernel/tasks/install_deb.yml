@@ -1,0 +1,6 @@
+---
+- name: Install | Install a .deb package
+  ansible.builtin.apt:
+    deb: "{{ item }}"
+  become: true
+  loop: "{{ install_pkgs }}"

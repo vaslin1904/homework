@@ -1,0 +1,10 @@
+---
+#remote_path: https://kernel.ubuntu.com/mainline/v6.11-rc7/amd64
+download_pkgs:
+  - https://kernel.ubuntu.com/mainline/v6.11-rc7/amd64/linux-headers-6.11.0-061100rc7_6.11.0-061100rc7.202409082235_all.deb
+  - https://kernel.ubuntu.com/mainline/v6.11-rc7/amd64/linux-image-unsigned-6.11.0-061100rc7-generic_6.11.0-061100rc7.202409082235_amd64.deb
+  - https://kernel.ubuntu.com/mainline/v6.11-rc7/amd64/linux-modules-6.11.0-061100rc7-generic_6.11.0-061100rc7.202409082235_amd64.deb
+install_pkgs:
+  - /home/vagrant/Downloads/linux-headers-6.11.0-061100rc7_6.11.0-061100rc7.202409082235_all.deb
+  - /home/vagrant/Downloads/linux-modules-6.11.0-061100rc7-generic_6.11.0-061100rc7.202409082235_amd64.deb
+  - /home/vagrant/Downloads/linux-image-unsigned-6.11.0-061100rc7-generic_6.11.0-061100rc7.202409082235_amd64.deb
