@@ -1,4 +1,4 @@
-#Обновление ядра системы
+# Обновление ядра системы
 __________________________________________
 Исходные данные:
 - Vagrantfile. Разворачивается виртуальная машина "kernel-update".
@@ -26,5 +26,5 @@ ownload_pkgs:
   - https://kernel.ubuntu.com/mainline/v6.11-rc7/amd64/linux-modules-6.11.0-061100rc7-generic_6.11.0-061100rc7.202409082235_amd64.deb
 4. Установка скаченных deb пакетов. Task - Install.
 5. Перезагрузка гостевой машины. Task - Reboot.
-6. Перечитывание версии ядра. Task Task - read_version
+6. Перечитывание версии ядра. Task - read_version
 
