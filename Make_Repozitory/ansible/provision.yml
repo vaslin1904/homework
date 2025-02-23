@@ -1,0 +1,8 @@
+- name: repository
+  hosts: all
+  ignore_errors: yes
+
+  become: True
+
+  roles:
+  - repo

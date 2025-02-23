@@ -1,0 +1,16 @@
+---
+  - name: create repozitory
+    ansible.builtin.shell: "{{item}}"
+    args:
+      executable: /bin/bash
+    become: true
+    loop:
+      - cp -r {{work_dir}} /usr/local
+  #generate the Packages.gz zip file from the package(s) in the repos directory and compress it
+      - dpkg-scanpackages /usr/local/repo /dev/null | gzip -9c > /usr/local/repo/Packages.gz
+  #add the repos directory path to sources.list:
+      - echo "deb [trusted=yes] file:///usr/local/repo ./" | sudo tee -a /etc/apt/sources.list
+
+  - name: update_cache
+    ansible.builtin.apt:
+      update_cache: yes

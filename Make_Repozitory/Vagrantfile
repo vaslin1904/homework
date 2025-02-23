@@ -1,0 +1,35 @@
+# Describe VMs
+
+MACHINES = {
+  # VM name "repo"
+  :"repo" => {
+              # VM box
+              :box_name => "generic/ubuntu2204",
+              # VM CPU count
+              :cpus => 2,
+              # VM RAM size (Mb)
+              :memory => 1024,
+              # networks
+              :net => [],
+              # forwarded ports
+              :forwarded_port => []
+            }
+}
+
+Vagrant.configure("2") do |config|
+  MACHINES.each do |boxname, boxconfig|
+    config.vm.define boxname do |box|
+      box.vm.box = boxconfig[:box_name]
+      box.vm.box_version = boxconfig[:box_version]
+      box.vm.host_name = boxname.to_s
+      box.vm.provider "virtualbox" do |v|
+        v.memory = boxconfig[:memory]
+        v.cpus = boxconfig[:cpus]
+      end
+    end
+  end
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "ansible/provision.yml" 
+  end
+
+end

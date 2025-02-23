@@ -1,0 +1,11 @@
+---
+# В файле раскомментируем строку с репозиторием исходников
+- name: change_nginx_rules
+  ansible.builtin.command: "{{ item }}"
+  args:
+    chdir: "{{work_dir}}/nginx-{{nginx_ver}}/debian"
+  become: true
+
+  loop:
+    - sed -i '76 s/$/ \\/' rules
+    - sed -i '77 s/^$/        --add-module=$(MODULESDIR)\/ngx_brotli/' rules

@@ -1,0 +1,9 @@
+---
+#Установка необходимых пакетов
+- name: install_pgs | Install a package
+  ansible.builtin.apt:
+    update_cache: yes
+    name: "{{ item }}"
+  become: true
+  tags: st
+  loop: "{{ install_pkgs }}"

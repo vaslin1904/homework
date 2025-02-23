@@ -1,0 +1,44 @@
+---
+# Установка необходимых пакетов для создания репозитория,
+# а также библиотек, которые нужны для установки nginx со сборки
+- name: install_pgs
+  ansible.builtin.include_tasks: "install_pkg.yml"
+  tags: install_pgs
+#
+# # Подготовка для скачивания пакета nginx с исходниками
+- name: Preparation
+  ansible.builtin.include_tasks: "preparation_download.yml"
+#
+# # #Скачиваем пакет nginx
+- name: Download_nginx
+  ansible.builtin.include_tasks: "download_nginx.yml"
+  tags: Download_nginx
+# #
+# # #Добавляем в скаченный пакет nginx модуль brotli.
+# # # Модуль Brotli, включённый в NGINX, позволяет серверу
+# # #сжимать ответ, если клиент указывает на поддержку этого.
+# # #Что помогает уменьшить размер ответа и улучшить общую производительность сайта
+- name: create_brotli
+  ansible.builtin.include_tasks: "create_brotli.yml"
+  tags: create_brotli
+# # #
+# # # #Указываем nginx информацию о дополнительном модуле Brotli
+- name: change_nginx_rules
+  ansible.builtin.include_tasks: "change_nginx_rules.yml"
+  tags: change roles
+# # #
+# # # #Собираем пакет nginx из исходников со встроенным модулем Brotli
+- name: Build New ngx with brotli
+  ansible.builtin.include_tasks: "build_newngx.yml"
+  tags: build_ngx
+# # #
+# # # #Подменяем default конфиг
+- name: setting_nginx
+  ansible.builtin.include_tasks: "setting_nginx.yml"
+  tags: create_repo
+# #
+# # #Индексируются файлы репозитория, информация о новом
+# # #репозитории размещается в source.list
+- name: Create repozitory
+  ansible.builtin.include_tasks: "create_repo.yml"
+  tags: create_repo
