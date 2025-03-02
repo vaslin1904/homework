@@ -1,0 +1,6 @@
+---
+- name: Create ISO directory
+  file:
+    path: /iso
+    state: directory
+    mode: '0755'

@@ -1,0 +1,20 @@
+---
+# Создание директории под репозиторий  nginx.
+  - name: Create_dir_for_nginx | Ditectory for repository
+    ansible.builtin.file:
+      path: "{{work_dir}}"
+      state: directory
+    become: true
+
+# #Для скачивания исходников nginx разкоментировали репозитории deb-src в
+#файле /etc/apt/source
+  - name: preparation_download | preparation_download for download nginx
+    ansible.builtin.command: "{{ item }}"
+    become: true
+    loop:
+      - sed -i '/deb-src/s/^#//' /etc/apt/sources.list
+      - sed -i 's/^[ \t]*//' /etc/apt/sources.list
+
+  - name: update_cache
+    ansible.builtin.apt:
+      update_cache: yes

@@ -1,0 +1,6 @@
+---
+- name: restart tftp-server
+  service:
+    name: tftp.service
+    state: restarted
+    enabled: true

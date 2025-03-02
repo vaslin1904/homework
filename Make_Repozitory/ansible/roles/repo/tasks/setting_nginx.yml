@@ -1,0 +1,10 @@
+---
+  - name: setting_nginx
+    ansible.builtin.copy:
+      dest: /etc/nginx/sites-available/default
+      src: etc/nginx/sites-available/default
+      owner: root
+      group: root
+      mode: '0644'
+
+    notify: nginx_reload

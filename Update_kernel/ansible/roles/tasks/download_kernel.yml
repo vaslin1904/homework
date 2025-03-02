@@ -1,0 +1,12 @@
+---
+#Install EPEL Repo
+- name: Download | Download necessary files
+  ansible.builtin.get_url:
+    url: "{{ item }}"
+    dest: /home/vagrant/Downloads
+  loop: "{{ download_pkgs }}"  
+  tags: download_deb
+
+ #   method: GET
+
+#    force_basic_auth: yes

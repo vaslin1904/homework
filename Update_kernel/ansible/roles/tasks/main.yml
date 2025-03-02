@@ -1,0 +1,24 @@
+---
+#include tasks
+- name: read_version
+  ansible.builtin.include_tasks: "read_version.yml"
+  tags: ans_facts
+
+- name: Create
+  ansible.builtin.include_tasks: "create_dir.yml"
+
+- name: Download
+  ansible.builtin.include_tasks: "download_kernel.yml"
+  tags: download_deb
+
+
+- name: Install
+  ansible.builtin.include_tasks: "install_deb.yml"
+  tags: install_deb
+
+- name: Reboot VM
+  ansible.builtin.include_tasks: "reboot.yml"
+  tags: reboot_sys
+
+- name: read_version
+  ansible.builtin.include_tasks: "read_version.yml"

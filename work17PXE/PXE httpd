@@ -1,0 +1,15 @@
+1.save iso
+primer: wget https://mirror.yandex.ru/centos/8-stream/isos/x86_64/CentOS-Stream-8-20230710.0-x86_64-boot.iso
+2.Смонтировать образ:
+mount -t iso9660 CentOS-8.4.2105-x86_64-dvd1.iso /mnt -o loop,ro
+3. Скопировать файлы с монтируемого образа в папку репозитория (/iso)
+4.Ставим права 755 на каталог /iso: chmod -R 755 /iso
+5. Настраиваем доступ по HTTP для файлов из каталога /iso:
+6. Создаем конфигурационный файл: vi /etc/httpd/conf.d/pxeboot.conf
+Alias /centos8 /iso
+<Directory /iso>
+Options Indexes FollowSymLinks
+Require all granted
+</Directory>
+7.Перезапускаем веб-сервер: systemctl restart httpd
+8. Проверяем, что веб-сервер работает и каталог /iso доступен по сети:

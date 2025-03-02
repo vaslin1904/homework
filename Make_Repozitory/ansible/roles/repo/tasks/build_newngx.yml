@@ -1,0 +1,14 @@
+---
+  - name: change_version package ngx
+    ansible.builtin.lineinfile:
+      path: "{{work_dir}}/nginx-1.18.0/debian/changelog"
+      insertbefore: BOF
+      line: 'nginx ({{nginx_ver}}-myVersion) stable; urgency=medium'
+    become: true
+
+
+  - name: Build New ngx with brotli
+    ansible.builtin.command: dpkg-buildpackage -b
+    args:
+      chdir: "{{work_dir}}/nginx-{{nginx_ver}}"
+    become: true

@@ -1,0 +1,7 @@
+---
+  - name: Download_nginx
+    ansible.builtin.command: apt-get source nginx
+    args:
+      chdir: "{{work_dir}}"
+    become: true
+    tags: download_nginx

@@ -1,0 +1,11 @@
+---
+#create_config
+- name: read_version
+  shell:
+    cat /proc/version
+  register: file_content
+  
+
+- name: "Print the file content to a console"
+  debug:
+    msg: "{{ file_content.stdout }}"

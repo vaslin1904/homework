@@ -1,11 +1,11 @@
 ---
-#module handlers  
+#module handlers
 - name: restart nginx
   systemd:
     name: nginx
     state: restarted
     enabled: yes
 - name: reload nginx
-    systemd:
-      name: nginx
-      state: reloaded 
+  systemd:
+    name: nginx
+    state: reloaded 

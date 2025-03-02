@@ -1,0 +1,32 @@
+---
+work_dir: /home/vagrant/repo
+
+install_pkgs:
+  - cmake
+  - dpkg-dev
+  - zlib1g-dev
+  - libpcre3-dev
+  - dh-make
+  - devscripts
+  - libexpat-dev
+  - libgd-dev
+  - libgeoip-dev
+  - libhiredis-dev
+  - libmaxminddb-dev
+  - libmhash-dev
+  - libpam0g-dev
+  - libperl-dev
+  - libssl-dev
+  - libxslt1-dev
+  - quilt
+  - nginx
+  #  - gcc
+  #  - build-essential
+  #  - zlib1g
+  #  - libpcre3
+  #  - unzip
+  #  - binutils
+  #  - automake
+  #  - libcurl4-gnutls-dev
+
+nginx_ver: 1.18.0

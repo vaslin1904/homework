@@ -1,0 +1,55 @@
+---
+  - name: Clone ngx_brotli
+    ansible.builtin.git:
+      repo: https://github.com/google/ngx_brotli
+      dest: "{{work_dir}}/nginx-{{nginx_ver}}/debian/modules/ngx_brotli"
+      clone: yes
+      recursive: yes
+
+  - name: Create_dir_out
+    ansible.builtin.file:
+      path: "{{work_dir}}/nginx-{{nginx_ver}}/debian/modules/ngx_brotli/deps/brotli/out"
+      state: directory
+    become: true
+
+  - name: Cmake_brotli
+    ansible.builtin.command: "{{ item }}"
+    args:
+      chdir: "{{work_dir}}/nginx-{{nginx_ver}}/debian/modules/ngx_brotli/deps/brotli/out"
+
+    loop:
+      - cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DCMAKE_C_FLAGS="-Ofast -m64 -march=native -mtune=native -flto -funroll-loops -ffunction-sections -fdata-sections -Wl,--gc-sections" -DCMAKE_CXX_FLAGS="-Ofast -m64 -march=native -mtune=native -flto -funroll-loops -ffunction-sections -fdata-sections -Wl,--gc-sections" -DCMAKE_INSTALL_PREFIX=./installed ..
+      - cmake --build . --config Release --target brotlienc
+
+
+
+
+
+
+#    community.general.make:
+#      chdir: /home/vagrant/nginx-1.18.0/debian/modules/ngx_brotli/deps/brotli/out
+#      target: brotlienc
+#      params:
+#        DCMAKE_BUILD_TYPE: Release
+#        DBUILD_SHARED_LIBS: OFF
+#        DCMAKE_C_FLAGS: "-Ofast -m64 -march=native -mtune=native -flto -funroll-loops -ffunction-sections -fdata-sections -Wl,--gc-sections"
+#        DCMAKE_CXX_FLAGS: "-Ofast -m64 -march=native -mtune=native -flto -funroll-loops -ffunction-sections -fdata-sections -Wl,--gc-sections"
+#        DCMAKE_INSTALL_PREFIX: ./installed ..
+
+
+
+
+
+
+
+
+
+
+  #  ansible.builtin.command: "{{ item }}"
+  #  with_items:
+  #    - chdir=/home/vagrant/nginx-*/debian/modules/
+  #    - git clone --recurse-submodules -j8 https://github.com/google/ngx_brotli
+  #    - ngx_brotli/deps/brotli
+  #    - mkdir out && cd out
+  #    - cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DCMAKE_C_FLAGS="-Ofast -m64 -march=native -mtune=native -flto -funroll-loops -ffunction-sections -fdata-sections -Wl,--gc-sections" -DCMAKE_CXX_FLAGS="-Ofast -m64 -march=native -mtune=native -flto -funroll-loops -ffunction-sections -fdata-sections -Wl,--gc-sections" -DCMAKE_INSTALL_PREFIX=./installed ..
+  #    - cmake --build . --config Release --target brotlienc
